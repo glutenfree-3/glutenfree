@@ -1,2 +1,0 @@
-
-function gfOpenArt(src){const d=document.getElementById('gfViewer');d.querySelector('img').src=src;d.showModal();}document.getElementById('gfCloseArt').onclick=()=>document.getElementById('gfViewer').close();document.getElementById('charPortrait').onclick=e=>gfOpenArt(e.currentTarget.src);document.getElementById('gfViewer').addEventListener('click',e=>{if(e.target.tagName==='IMG')e.currentTarget.close()});
