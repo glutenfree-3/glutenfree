@@ -90,7 +90,7 @@ async function playTrack(){
   }
 }
 loadTrack(currentTrack);playTrack();
-function unlock(e){if(!document.getElementById('extraGate').hidden||!document.getElementById('extraWorld').hidden||!document.getElementById('extraBoot').hidden)return;if(!activated && !e.target.closest('#musicBtn,#nextBtn,#prevTrack,#shuffleBtn'))playTrack();}
+function unlock(e){if(!document.getElementById('extraGate').hidden||!document.getElementById('extraWorld').hidden||!document.getElementById('extraBoot').hidden)return;if(!activated && !e.target.closest('#musicBtn,#nextBtn,#prevTrack,#shuffleBtn,#welcomeButton'))playTrack();}
 document.addEventListener('click',unlock);document.addEventListener('keydown',unlock);
 bgm.addEventListener('loadedmetadata', ()=>{ dur.textContent=fmt(bgm.duration); });
 bgm.addEventListener('timeupdate', ()=>{
@@ -186,6 +186,18 @@ function resetWelcome(){
   clearTimeout(welcomeTimer);
 }
 
+function startWelcome(){
+  if(welcomeTrack<0 || !document.body.classList.contains('is-home') ||
+     transitioning || welcomeOverlays.some(overlay=>!overlay.hidden))return;
+  resetWelcome();
+  loadTrack(welcomeTrack);
+  playTrack();
+  welcomeLights.hidden=false;
+  welcomeTimer=setTimeout(resetWelcome,8000);
+}
+
+document.getElementById('welcomeButton').addEventListener('click',startWelcome);
+
 window.addEventListener('keydown',event=>{
   if(event.repeat || event.isComposing || event.ctrlKey || event.altKey || event.metaKey)return;
   if(!document.body.classList.contains('is-home') || transitioning ||
@@ -207,13 +219,7 @@ window.addEventListener('keydown',event=>{
   if(now-welcomeLastKey>2500)welcomeKeys='';
   welcomeLastKey=now;
   welcomeKeys=(welcomeKeys+event.key.toLowerCase()).slice(-7);
-  if(welcomeKeys!=='welcome' || welcomeTrack<0)return;
-
-  resetWelcome();
-  loadTrack(welcomeTrack);
-  playTrack();
-  welcomeLights.hidden=false;
-  welcomeTimer=setTimeout(resetWelcome,8000);
+  if(welcomeKeys==='welcome')startWelcome();
 });
 
 window.addEventListener('hashchange',route);document.getElementById('backHome').onclick=()=>{try{retroClick()}catch(e){};sceneTransition(0);};route();
