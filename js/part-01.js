@@ -154,6 +154,7 @@ async function sceneTransition(idx){
  try{const cells=[...wipe.children];await Promise.all(cells.map((c,i)=>c.animate([{opacity:0},{opacity:1}],{duration:100,delay:((i%12)+Math.floor(i/12))*12,easing:'steps(2,end)',fill:'forwards'}).finished));navigate(idx);window.scrollTo(0,0);await Promise.all(cells.map((c,i)=>c.animate([{opacity:1},{opacity:0}],{duration:100,delay:(19-(i%12)-Math.floor(i/12))*10,easing:'steps(2,end)',fill:'forwards'}).finished));}finally{wipe.children.length&&[...wipe.children].forEach(c=>c.getAnimations().forEach(a=>a.cancel()));wipe.classList.remove('running');transitioning=false;}
 }
 function navigate(idx,writeHash=true){
+ resetWelcome();
  const panel=document.getElementById('pagePanel');panel.hidden=idx===0; panel.classList.toggle("charpage",idx===1);document.getElementById("character").hidden=idx!==1;document.getElementById("placeholder").hidden=idx===1;
  document.body.classList.toggle("is-home",idx===0);
  document.getElementById('pageTitle').textContent=menuBtns[idx].dataset.name;
@@ -172,6 +173,49 @@ document.getElementById('crtHome').onclick=()=>{retroClick();location.hash='home
 
 
 function route(){if(location.hash==='#gallery'){navigate(1,false);showCRT();return;}hideCRT();const i=menuBtns.findIndex(b=>b.dataset.name.toLowerCase()===location.hash.slice(1));navigate(Math.max(0,i),false);}
+const welcomeLights=document.getElementById('welcomeLights');
+const welcomeTrack=tracks.findIndex(track=>track.title==='WELCOME.exe');
+const welcomeOverlays=['extraGate','extraWorld','extraBoot'].map(id=>document.getElementById(id));
+let welcomeKeys='';
+let welcomeLastKey=0;
+let welcomeTimer;
+
+function resetWelcome(){
+  welcomeKeys='';
+  welcomeLights.hidden=true;
+  clearTimeout(welcomeTimer);
+}
+
+window.addEventListener('keydown',event=>{
+  if(event.repeat || event.isComposing || event.ctrlKey || event.altKey || event.metaKey)return;
+  if(!document.body.classList.contains('is-home') || transitioning ||
+     welcomeOverlays.some(overlay=>!overlay.hidden) ||
+     event.target.closest('input, textarea, select, [contenteditable], dialog')){
+    welcomeKeys='';
+    return;
+  }
+  if(event.key==='Escape'){
+    resetWelcome();
+    return;
+  }
+  if(event.key==='Shift')return;
+  if(!/^[a-z]$/i.test(event.key)){
+    welcomeKeys='';
+    return;
+  }
+  const now=performance.now();
+  if(now-welcomeLastKey>2500)welcomeKeys='';
+  welcomeLastKey=now;
+  welcomeKeys=(welcomeKeys+event.key.toLowerCase()).slice(-7);
+  if(welcomeKeys!=='welcome' || welcomeTrack<0)return;
+
+  resetWelcome();
+  loadTrack(welcomeTrack);
+  playTrack();
+  welcomeLights.hidden=false;
+  welcomeTimer=setTimeout(resetWelcome,8000);
+});
+
 window.addEventListener('hashchange',route);document.getElementById('backHome').onclick=()=>{try{retroClick()}catch(e){};sceneTransition(0);};route();
 menuBtns.forEach((btn,idx)=>{
   btn.addEventListener('mouseenter',()=>setMenu(idx,true));btn.addEventListener('mouseleave',()=>{hoverIndex=-1;});
