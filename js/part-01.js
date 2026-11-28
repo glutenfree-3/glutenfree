@@ -344,6 +344,7 @@ window.addEventListener('keydown',e=>{
 
 const charPortrait=document.getElementById('charPortrait');
 const characterWheel=document.getElementById('characterWheel');
+const characterStagePulse=document.getElementById('characterStagePulse');
 const characterDetails=document.getElementById('characterDetails');
 const characterCurrent=document.getElementById('characterCurrent');
 const characterRoster=document.getElementById('roster');
@@ -420,6 +421,11 @@ function selectCharacter(offset){
     drawCharacterWheel(wheelTurn);
     return;
   }
+  characterStagePulse.getAnimations?.().forEach(animation=>animation.cancel());
+  characterStagePulse.animate?.([
+    {opacity:.8,transform:'scale(.6)'},
+    {opacity:0,transform:'scale(1.42)'}
+  ],{duration:570,easing:'cubic-bezier(.16,1,.3,1)'});
   const start=performance.now();
   const tick=now=>{
     const progress=Math.min(1,(now-start)/380);
