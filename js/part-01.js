@@ -171,13 +171,36 @@ async function confirmMenu(idx){
   }finally{btn.classList.remove('confirming');confirming=false;}
 }
 let transitioning=false;
-const wipe=document.getElementById('wipe');
-for(let i=0;i<96;i++)wipe.append(document.createElement('i'));
+const pageSweep=document.getElementById('pageSweep');
 async function sceneTransition(idx){
- if(transitioning)return;transitioning=true;
- if(matchMedia('(prefers-reduced-motion: reduce)').matches){navigate(idx);transitioning=false;return;}
- wipe.classList.add('running');
- try{const cells=[...wipe.children];await Promise.all(cells.map((c,i)=>c.animate([{opacity:0},{opacity:1}],{duration:100,delay:((i%12)+Math.floor(i/12))*12,easing:'steps(2,end)',fill:'forwards'}).finished));navigate(idx);window.scrollTo(0,0);await Promise.all(cells.map((c,i)=>c.animate([{opacity:1},{opacity:0}],{duration:100,delay:(19-(i%12)-Math.floor(i/12))*10,easing:'steps(2,end)',fill:'forwards'}).finished));}finally{wipe.children.length&&[...wipe.children].forEach(c=>c.getAnimations().forEach(a=>a.cancel()));wipe.classList.remove('running');transitioning=false;}
+  if(transitioning)return;
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches || !pageSweep?.animate){
+    navigate(idx);
+    window.scrollTo(0,0);
+    return;
+  }
+
+  transitioning=true;
+  pageSweep.hidden=false;
+  const position=offset=>({transform:`translateX(${offset}vw) skewX(-15deg)`});
+  let animation;
+  try{
+    animation=pageSweep.animate([position(-110),position(0)],{
+      duration:130,easing:'cubic-bezier(.45,0,.7,1)',fill:'forwards'
+    });
+    await animation.finished.catch(()=>{});
+    navigate(idx);
+    window.scrollTo(0,0);
+    animation.cancel();
+    animation=pageSweep.animate([position(0),position(110)],{
+      duration:170,easing:'cubic-bezier(.3,0,.55,1)'
+    });
+    await animation.finished.catch(()=>{});
+  }finally{
+    pageSweep.hidden=true;
+    animation?.cancel();
+    transitioning=false;
+  }
 }
 const pageTabs=[...document.querySelectorAll('.page-tabs a')];
 const siteBrand=document.querySelector('.site-brand');
