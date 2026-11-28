@@ -36,9 +36,21 @@ const trackTitle=document.getElementById('trackTitle');
 const musicBtn=document.getElementById('musicBtn');
 const sfxToggle=document.getElementById('sfxToggle');
 let sfxEnabled=true;
-let currentTrack=visualIndex;
+const lastTrackKey='glutenfree:last-bgm';
+let currentTrack;
 let activated=false;
 bgm.volume=.2;
+
+function initialTrack(){
+  try{
+    const previousSource=sessionStorage.getItem(lastTrackKey);
+    const previousIndex=tracks.findIndex(track=>track.src===previousSource);
+    if(previousIndex>=0 && tracks.length>1)return randomOtherTrack(previousIndex);
+  }catch{
+    // Playback still works when browser storage is unavailable.
+  }
+  return visualIndex;
+}
 
 function loadTrack(idx){
   currentTrack=idx;
@@ -48,11 +60,16 @@ function loadTrack(idx){
   bgm.load();
   trackTitle.textContent=track.title;
   trackTitle.title=track.title;
+  try{sessionStorage.setItem(lastTrackKey,track.src);}catch{}
+}
+
+function randomOtherTrack(index){
+  const offset=1+Math.floor(Math.random()*(tracks.length-1));
+  return (index+offset)%tracks.length;
 }
 
 function chooseRandomNext(){
-  const offset=1+Math.floor(Math.random()*(tracks.length-1));
-  loadTrack((currentTrack+offset)%tracks.length);
+  loadTrack(randomOtherTrack(currentTrack));
   playTrack();
 }
 
@@ -100,7 +117,7 @@ for(const event of ['play','pause','ended','error','emptied'])bgm.addEventListen
 bgm.addEventListener('ended',chooseRandomNext);
 document.addEventListener('click',unlock);
 document.addEventListener('keydown',unlock);
-loadTrack(currentTrack);
+loadTrack(initialTrack());
 playTrack();
 
 let actx;
