@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="css/home-typography.css?v=20261128-header">
 <link rel="stylesheet" href="css/arcade-home.css?v=menu-hover">
 <link rel="stylesheet" href="css/site-layout.css?v=character-select">
-<link rel="stylesheet" href="css/character-wheel.css?v=stage-motion">
+<link rel="stylesheet" href="css/character-wheel.css?v=character-engraving">
 </head>
 <body class="is-home">
 <header class="site-header">
@@ -75,11 +75,10 @@
   <h2 id="pageTitle"></h2>
   <p id="placeholder">COMING SOON</p>
   <div id="character" hidden>
-    <h2 id="character-select-title">CHARACTER SELECT</h2>
     <div class="character-wheel" id="characterWheel" aria-label="キャラクター選択">
       <div class="character-stage-lights" aria-hidden="true">
-        <span class="character-stage-ring"></span>
-        <span class="character-stage-beam"></span>
+        <span class="character-stage-disc"></span>
+        <span class="character-stage-ornament"></span>
         <span id="characterStagePulse"></span>
       </div>
       <div class="character-orbit" id="roster"></div>
@@ -120,6 +119,6 @@
 </section>
 <div id="pageSweep" aria-hidden="true" hidden></div>
 <section id="extraBoot" hidden aria-live="polite"><div id="bootText"></div></section><section id="extraGate" hidden><button class="extraBack" id="extraReturn">◀ MAIN WORLD</button><p>GLUTENFREE / SECRET ARCHIVE</p><h1>EXTRA MODE</h1><p>★ ACHIEVEMENT UNLOCKED / UNKNOWN WORLD</p><div class="extraCards"><button id="enterSea">EXTRA 01<br><strong>OCEAN ARCHIVE</strong><br>▶ ENTER / DEMO</button><button disabled>EXTRA 02<br>LOCKED / ???</button><button disabled>EXTRA 03<br>LOCKED / ???</button></div><p>SELECT A WORLD</p></section><section id="extraWorld" hidden><div class="seaStars"></div><button class="extraBack" id="seaBack">← Extra archive</button><div class="seaContent"><svg class="seaArt" viewBox="0 0 400 420" aria-label="クラゲの仮イラスト"><defs><linearGradient id="seaGlow" x2="0" y2="1"><stop stop-color="#d5f9ff"/><stop offset="1" stop-color="#589cce" stop-opacity=".35"/></linearGradient></defs><circle cx="200" cy="170" r="145" fill="none" stroke="#b9eaff" opacity=".25"/><circle cx="200" cy="170" r="120" fill="none" stroke="#b9eaff" opacity=".4" stroke-dasharray="2 8"/><path d="M80 190Q80 60 200 60T320 190Q290 220 260 190Q230 220 200 190Q170 220 140 190Q110 220 80 190Z" fill="url(#seaGlow)" stroke="#c3f5ff" stroke-width="2"/><g fill="none" stroke="#a9e7ff" stroke-width="2" opacity=".8"><path d="M110 200Q60 250 130 300T110 390M150 200Q210 260 150 310T160 400M200 200Q160 270 220 320T200 405M250 200Q310 250 250 320T260 390M290 200Q240 260 310 320T290 380"/></g></svg><div><p>EXTRA 01 / A WORLD APART</p><h1>Ocean<br>Archive</h1><p>海の底に眠る、もうひとつの物語。</p><p>ZEESH / DEMO SLOT</p><button id="seaTalk">波の音を聴く</button><p id="seaLine" aria-live="polite"></p></div></div><div class="seaFoot">DEMO WORLD / 仮イラスト・仮演出</div></section><div id="diveFX" hidden aria-hidden="true"><div class="water"></div><div class="surface"></div><div class="diveLabel">DESCENDING...</div></div><audio id="bgm" preload="auto" autoplay playsinline></audio>
-<script src="js/part-01.js?v=stage-motion"></script>
+<script src="js/part-01.js?v=character-engraving"></script>
 <dialog id="gfViewer" aria-label="イラスト全画面鑑賞"><button id="gfCloseArt">× CLOSE / ESC</button><img alt="イラスト"></dialog><script src="js/part-02.js?v=20261128-header"></script></body>
 </html>

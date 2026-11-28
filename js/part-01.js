@@ -458,6 +458,7 @@ function updateCharacterTheme(){
   const {name,color}=characters[characterSelected];
   characterCurrent.textContent=name;
   characterScreen.style.setProperty('--character-accent',color);
+  characterScreen.dataset.motif=name.toLowerCase();
 }
 
 characterSlots[0].button.setAttribute('aria-current','true');
