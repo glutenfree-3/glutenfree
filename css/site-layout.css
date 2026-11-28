@@ -350,3 +350,13 @@ body:has(#extraBoot:not([hidden]), #extraGate:not([hidden]), #extraWorld:not([hi
     font-size: .625rem;
   }
 }
+
+.mini-player-hint {
+  font-size: .625rem;
+  line-height: 1.15;
+}
+
+.mini-player:has(.mini-player-hint:not([hidden])) #musicBtn {
+  outline: 1px solid #c8ff46;
+  outline-offset: 1px;
+}
