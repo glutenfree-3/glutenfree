@@ -6,8 +6,7 @@
   font-display: swap;
 }
 
-.is-home .ui,
-.is-home #extraShortcut {
+.is-home .ui {
   font-family: Oxanium, "Hiragino Sans", "Yu Gothic", Meiryo, "Noto Sans CJK JP", "Noto Sans JP", system-ui, sans-serif;
 }
 
