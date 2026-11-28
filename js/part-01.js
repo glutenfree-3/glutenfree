@@ -347,7 +347,16 @@ const characterWheel=document.getElementById('characterWheel');
 const characterDetails=document.getElementById('characterDetails');
 const characterCurrent=document.getElementById('characterCurrent');
 const characterRoster=document.getElementById('roster');
-const characterNames=['Midori','Dai','Kotobuki','Sho','Tsukumo','Hiiro','Gaku'];
+const characters=[
+  {name:'Midori',color:'#c8ff46'},
+  {name:'Dai',color:'#ff9a57'},
+  {name:'Kotobuki',color:'#ffd365'},
+  {name:'Sho',color:'#c4a3ff'},
+  {name:'Tsukumo',color:'#b7dfff'},
+  {name:'Hiiro',color:'#60ead5'},
+  {name:'Gaku',color:'#ff747c'}
+];
+const characterScreen=document.getElementById('character');
 const reducedCharacterMotion=matchMedia('(prefers-reduced-motion: reduce)');
 let characterSelected=0;
 let wheelTurn=0;
@@ -356,7 +365,7 @@ let characterReturnFocus;
 let swipeStart;
 let suppressCharacterClickUntil=0;
 
-const characterSlots=characterNames.map((name,index)=>{
+const characterSlots=characters.map(({name},index)=>{
   const button=document.createElement('button');
   button.type='button';
   button.className='character-slot';
@@ -383,15 +392,15 @@ function drawCharacterWheel(turn){
   characterSlots.forEach(({button},index)=>{
     const angle=(index-turn)*2*Math.PI/characterSlots.length;
     const depth=(Math.cos(angle)+1)/2;
-    button.style.setProperty('--orbit-x',Math.sin(angle)*43+'%');
-    button.style.setProperty('--orbit-y',(-14+depth*29)+'%');
-    button.style.setProperty('--orbit-scale',.57+depth*.43);
+    button.style.setProperty('--orbit-x',Math.sin(angle)*22+'%');
+    button.style.setProperty('--orbit-y',(-17+depth*34)+'%');
+    button.style.setProperty('--orbit-scale',.56+.7*Math.pow(depth,1.7));
     button.style.zIndex=String(Math.round(depth*100));
   });
 }
 
 function selectCharacter(offset){
-  const count=characterNames.length;
+  const count=characters.length;
   const destination=(characterSelected+offset+count)%count;
   if(destination===characterSelected)return;
   const clockwise=(destination-characterSelected+count)%count;
@@ -401,7 +410,7 @@ function selectCharacter(offset){
   const anchor=characterSelected+Math.round((from-characterSelected)/count)*count;
   const target=anchor+distance;
   characterSelected=destination;
-  characterCurrent.textContent=characterNames[destination];
+  updateCharacterTheme();
   characterSlots.forEach(({button},index)=>{
     if(index===destination)button.setAttribute('aria-current','true');
     else button.removeAttribute('aria-current');
@@ -425,7 +434,7 @@ function openCharacter(){
   if(characterDetails.open)return;
   retroClick();
   characterReturnFocus=document.activeElement;
-  const name=characterNames[characterSelected];
+  const {name}=characters[characterSelected];
   const art=characterSlots[characterSelected].image;
   document.getElementById('characterDetailName').textContent=name;
   document.getElementById('midoriDossier').hidden=characterSelected!==0;
@@ -439,14 +448,21 @@ function stepCharacter(offset){
   retroClick();
 }
 
+function updateCharacterTheme(){
+  const {name,color}=characters[characterSelected];
+  characterCurrent.textContent=name;
+  characterScreen.style.setProperty('--character-accent',color);
+}
+
 characterSlots[0].button.setAttribute('aria-current','true');
+updateCharacterTheme();
 drawCharacterWheel(0);
 document.getElementById('characterPrevious').onclick=()=>stepCharacter(-1);
 document.getElementById('characterNext').onclick=()=>stepCharacter(1);
 document.getElementById('characterInspect').onclick=openCharacter;
 characterDetails.addEventListener('close',()=>characterReturnFocus?.focus());
 window.addEventListener('keydown',event=>{
-  if(document.getElementById('character').hidden || location.hash==='#gallery' ||
+  if(characterScreen.hidden || location.hash==='#gallery' ||
      characterDetails.open || welcomeOverlays.some(overlay=>!overlay.hidden) ||
      event.altKey || event.ctrlKey || event.metaKey ||
      !['ArrowLeft','ArrowRight'].includes(event.key))return;

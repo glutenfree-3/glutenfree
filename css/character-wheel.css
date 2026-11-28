@@ -1,10 +1,13 @@
 #character:not([hidden]) {
+  --character-accent: #c8ff46;
+  width: min(100%, 820px);
   grid-template-columns: minmax(0, 1fr);
   grid-template-rows: auto minmax(270px, 1fr) auto;
 }
 
 #character #character-select-title {
   margin-inline: auto;
+  color: var(--character-accent);
   font-size: clamp(1.2rem, 3vw, 2.6rem);
 }
 
@@ -13,11 +16,11 @@
   isolation: isolate;
   overflow: hidden;
   min-height: clamp(290px, 52svh, 680px);
-  border: 1px solid #c8ff4650;
+  border: 1px solid color-mix(in srgb, var(--character-accent) 36%, transparent);
   border-radius: 16px;
   background:
-    radial-gradient(ellipse at 50% 65%, #3a5b1e93, transparent 60%),
-    repeating-linear-gradient(0deg, #b7ff4108 0 1px, transparent 1px 6px),
+    radial-gradient(ellipse at 50% 65%, color-mix(in srgb, var(--character-accent) 26%, transparent), transparent 64%),
+    repeating-linear-gradient(0deg, #ffffff08 0 1px, transparent 1px 6px),
     #0b140e;
   touch-action: pan-y;
 }
@@ -25,16 +28,16 @@
 .character-wheel::before,
 .character-wheel::after {
   position: absolute;
-  inset: 45% 5% 9%;
+  inset: 48% 18% 12%;
   pointer-events: none;
   content: "";
-  border: 1px solid #c8ff46a0;
+  border: 1px solid color-mix(in srgb, var(--character-accent) 64%, transparent);
   border-radius: 50%;
-  box-shadow: 0 0 26px #baff4529, inset 0 0 18px #baff451f;
+  box-shadow: 0 0 26px color-mix(in srgb, var(--character-accent) 22%, transparent);
 }
 
 .character-wheel::after {
-  inset: 50% 13% 14%;
+  inset: 52% 23% 17%;
   border-style: dashed;
   opacity: .6;
   box-shadow: none;
@@ -53,8 +56,8 @@
   display: grid;
   grid-template-rows: minmax(0, 1fr);
   justify-items: center;
-  width: clamp(56px, 15vw, 205px);
-  height: clamp(100px, 36svh, 390px);
+  width: min(42%, 330px);
+  height: 66%;
   padding: 0;
   border: 0;
   background: none;
@@ -81,23 +84,25 @@
 }
 
 .character-slot[aria-current] img {
-  filter: drop-shadow(0 0 11px #beff65a0);
+  filter: drop-shadow(0 0 11px color-mix(in srgb, var(--character-accent) 65%, transparent));
 }
 
 .character-slot span {
   position: absolute;
-  right: 0;
   bottom: 0;
-  left: 0;
+  left: 50%;
+  width: max-content;
+  min-width: min(74px, 100%);
+  transform: translateX(-50%);
   padding: 3px;
   background: #091109e8;
   border-bottom: 1px solid #53684d;
 }
 
 .character-slot[aria-current] span {
-  color: #eaffb0;
-  border-color: #d9ff70;
-  box-shadow: 0 3px 13px #beff6550;
+  color: var(--character-accent);
+  border-color: var(--character-accent);
+  box-shadow: 0 3px 13px color-mix(in srgb, var(--character-accent) 35%, transparent);
 }
 
 .character-wheel-controls {
@@ -111,7 +116,16 @@
   min-width: 44px;
   min-height: 44px;
   border-radius: 6px;
+  border-color: color-mix(in srgb, var(--character-accent) 57%, #142617);
+  color: var(--character-accent);
   font: 800 1.2rem Oxanium, system-ui, sans-serif;
+}
+
+#character .character-wheel-controls button:hover,
+#character .character-wheel-controls button:focus-visible {
+  border-color: var(--character-accent);
+  background: color-mix(in srgb, var(--character-accent) 16%, #111b14);
+  box-shadow: 0 0 12px color-mix(in srgb, var(--character-accent) 22%, transparent);
 }
 
 #characterInspect small {
@@ -124,7 +138,7 @@
   max-height: calc(100svh - 24px);
   padding: 14px;
   overflow: auto;
-  border: 1px solid #c8ff46;
+  border: 1px solid var(--character-accent);
   border-radius: 12px;
   background: #101911;
   color: #e6f9d9;
@@ -152,6 +166,7 @@
 }
 
 #characterDetailName {
+  color: var(--character-accent);
   margin: 0 0 8px;
   font-family: Oxanium, system-ui, sans-serif;
 }
