@@ -34,6 +34,8 @@ setInterval(()=>showVisual(visualIndex+1),3000);
 const bgm=document.getElementById('bgm');
 const trackTitle=document.getElementById('trackTitle');
 const musicBtn=document.getElementById('musicBtn');
+const sfxToggle=document.getElementById('sfxToggle');
+let sfxEnabled=true;
 let currentTrack=visualIndex;
 let activated=false;
 bgm.volume=.2;
@@ -71,7 +73,7 @@ function updatePlayer(){
 }
 
 function unlock(event){
-  if(activated || event.target.closest('#musicBtn,#welcomeButton'))return;
+  if(activated || event.target.closest('.mini-player button,#welcomeButton'))return;
   if(['extraGate','extraWorld','extraBoot'].some(id=>!document.getElementById(id).hidden))return;
   playTrack();
 }
@@ -80,6 +82,19 @@ musicBtn.addEventListener('click',()=>{
   activated=true;
   if(bgm.paused || bgm.ended)playTrack();
   else bgm.pause();
+});
+for(const [id,offset] of [['prevTrack',-1],['nextTrack',1]]){
+  document.getElementById(id).addEventListener('click',()=>{
+    activated=true;
+    loadTrack((currentTrack+offset+tracks.length)%tracks.length);
+    playTrack();
+    retroClick();
+  });
+}
+sfxToggle.addEventListener('click',()=>{
+  sfxEnabled=!sfxEnabled;
+  sfxToggle.setAttribute('aria-pressed',String(sfxEnabled));
+  if(sfxEnabled)retroClick();
 });
 for(const event of ['play','pause','ended','error','emptied'])bgm.addEventListener(event,updatePlayer);
 bgm.addEventListener('ended',chooseRandomNext);
@@ -92,7 +107,7 @@ let actx;
 function AC(){ actx ||= new (window.AudioContext||window.webkitAudioContext)(); return actx; }
 
 function playMenuTones(context, frequencies, spacing, duration, peak){
-  if(context.state!=='running')return;
+  if(!sfxEnabled || context.state!=='running')return;
   frequencies.forEach((frequency,index)=>{
     const start=context.currentTime+index*spacing;
     const oscillator=context.createOscillator();
@@ -114,7 +129,7 @@ function retroHover(){
 }
 
 function retroClick(){
-  if(!(window.AudioContext||window.webkitAudioContext))return;
+  if(!sfxEnabled || !(window.AudioContext||window.webkitAudioContext))return;
   const context=AC();
   const play=()=>playMenuTones(context,[520,740,980],.04,.14,.027);
   if(context.state==='running')play();
@@ -338,4 +353,4 @@ function showCommand(name){
 }
 const sp=document.getElementById('spriteBtn');sp.onclick=()=>{hits++;document.getElementById('clickCount').textContent='INPUT '+String(hits).padStart(2,'0');const svg=sp.querySelector('svg');svg.classList.remove('bop');void svg.getBoundingClientRect();svg.classList.add('bop');retroClick();if(hits===5){unlocked=true;say('「……しつけぇな。猫でも連れてこい。」');showCommand('SECRET')}else say(hits>5?'「まだやんのかよ。」':['「……。」','「何だよ。」','「おい。」','「やめろ。」'][hits-1])};showCommand('PROFILE');
 
-(()=>{const $=id=>document.getElementById(id),logo=document.querySelector('.logo');let taps=0,last=0,busy=false;let saved=null;const seaAudio=new Audio('music/track-06.mp3');seaAudio.loop=true;seaAudio.preload='auto';seaAudio.volume=.25;function stopSea(){seaAudio.pause();seaAudio.currentTime=0}function seaSound(){seaAudio.volume=bgm.volume;seaAudio.play().catch(()=>{});}function openGate(){if(!saved){saved={playing:!bgm.paused};bgm.pause()}$('extraBoot').hidden=true;$('extraWorld').hidden=true;$('extraGate').hidden=false;stopSea();}function closeExtra(){$('extraGate').hidden=true;$('extraWorld').hidden=true;$('extraBoot').hidden=true;stopSea();if(saved?.playing)playTrack();saved=null}async function unlock(){if(busy)return;busy=true;$('extraBoot').hidden=false;$('bootText').textContent='';for(const line of ['> SYSTEM SCANNING...','> UNKNOWN DATA FOUND.','> MOUNTING SECRET WORLD...','> ACCESS GRANTED.']){const p=document.createElement('div');p.textContent=line;$('bootText').append(p);try{retroClick()}catch(e){};await new Promise(r=>setTimeout(r,350))}openGate();busy=false}logo.tabIndex=0;logo.setAttribute('role','button');function tap(){if(welcomeOverlays.some(overlay=>!overlay.hidden))return;if(Date.now()-last>1600)taps=0;last=Date.now();if(++taps===5){taps=0;unlock()}}logo.addEventListener('click',tap);logo.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();e.stopPropagation();tap()}});$('extraReturn').onclick=closeExtra;let diving=false;function diveSound(){try{const c=new (window.AudioContext||window.webkitAudioContext)();c.resume().catch(()=>{});const t=c.currentTime;const master=c.createGain();master.gain.value=.55;master.connect(c.destination);const len=Math.floor(c.sampleRate*2.5),buf=c.createBuffer(1,len,c.sampleRate),d=buf.getChannelData(0);let z=0;for(let i=0;i<len;i++){z=.96*z+.04*(Math.random()*2-1);d[i]=z*3}const n=c.createBufferSource(),f=c.createBiquadFilter(),g=c.createGain();n.buffer=buf;f.type='lowpass';f.frequency.setValueAtTime(1300,t);f.frequency.exponentialRampToValueAtTime(180,t+2.3);g.gain.setValueAtTime(.001,t);g.gain.linearRampToValueAtTime(.33,t+.22);g.gain.exponentialRampToValueAtTime(.001,t+2.45);n.connect(f).connect(g).connect(master);n.start(t);for(let i=0;i<24;i++){const a=t+.06+i*.087+Math.random()*.045,o=c.createOscillator(),v=c.createGain(),freq=140+Math.random()*490;o.type='sine';o.frequency.setValueAtTime(freq,a);o.frequency.exponentialRampToValueAtTime(freq*(1.5+Math.random()),a+.14);v.gain.setValueAtTime(.001,a);v.gain.exponentialRampToValueAtTime(.10+Math.random()*.10,a+.026);v.gain.exponentialRampToValueAtTime(.001,a+.19);o.connect(v).connect(master);o.start(a);o.stop(a+.20)}setTimeout(()=>c.close().catch(()=>{}),2800)}catch(e){}}$('enterSea').onclick=async()=>{if(diving)return;diving=true;$('enterSea').disabled=true;seaAudio.volume=0;seaAudio.play().catch(()=>{});const fx=$('diveFX');diveSound();try{if(!matchMedia('(prefers-reduced-motion: reduce)').matches){fx.querySelectorAll('i').forEach(x=>x.remove());for(let j=0;j<42;j++){const b=document.createElement('i'),r=7+Math.random()*38;b.style.cssText=`left:${Math.random()*100}%;width:${r}px;height:${r}px;--life:${1.2+Math.random()*1.4}s;--delay:${Math.random()*.85}s;--drift:${(Math.random()-.5)*150}px`;fx.append(b)}fx.hidden=false;await fx.animate([{opacity:0},{opacity:1}],{duration:420,fill:'forwards'}).finished;await new Promise(r=>setTimeout(r,1500));}$('extraGate').hidden=true;$('extraWorld').hidden=false;seaAudio.currentTime=0;seaSound();if(!fx.hidden)await fx.animate([{opacity:1},{opacity:0}],{duration:650,fill:'forwards'}).finished;}finally{fx.hidden=true;fx.getAnimations().forEach(a=>a.cancel());$('enterSea').disabled=false;diving=false}};$('seaBack').onclick=openGate;$('seaTalk').onclick=()=>{$('seaLine').textContent=['遠くから、微かな旋律が聞こえる。','光の粒が、静かに漂っている。','ここにはまだ、知らない物語がある。'][Math.floor(Math.random()*3)]};window.addEventListener('keydown',e=>{if(e.key==='Escape'&&saved&&!diving)closeExtra()});window.addEventListener('keydown',e=>{if(saved||busy){if(['ArrowUp','ArrowDown','ArrowLeft','ArrowRight','Enter'].includes(e.key)&&e.target===document.body){e.stopImmediatePropagation();e.preventDefault()}}},true);})();
+(()=>{const $=id=>document.getElementById(id),logo=document.querySelector('.logo');let taps=0,last=0,busy=false;let saved=null;const seaAudio=new Audio('music/track-06.mp3');seaAudio.loop=true;seaAudio.preload='auto';seaAudio.volume=.25;function stopSea(){seaAudio.pause();seaAudio.currentTime=0}function seaSound(){seaAudio.volume=bgm.volume;seaAudio.play().catch(()=>{});}function openGate(){if(!saved){saved={playing:!bgm.paused};bgm.pause()}$('extraBoot').hidden=true;$('extraWorld').hidden=true;$('extraGate').hidden=false;stopSea();}function closeExtra(){$('extraGate').hidden=true;$('extraWorld').hidden=true;$('extraBoot').hidden=true;stopSea();if(saved?.playing)playTrack();saved=null}async function unlock(){if(busy)return;busy=true;$('extraBoot').hidden=false;$('bootText').textContent='';for(const line of ['> SYSTEM SCANNING...','> UNKNOWN DATA FOUND.','> MOUNTING SECRET WORLD...','> ACCESS GRANTED.']){const p=document.createElement('div');p.textContent=line;$('bootText').append(p);try{retroClick()}catch(e){};await new Promise(r=>setTimeout(r,350))}openGate();busy=false}logo.tabIndex=0;logo.setAttribute('role','button');function tap(){if(welcomeOverlays.some(overlay=>!overlay.hidden))return;if(Date.now()-last>1600)taps=0;last=Date.now();if(++taps===5){taps=0;unlock()}}logo.addEventListener('click',tap);logo.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();e.stopPropagation();tap()}});$('extraReturn').onclick=closeExtra;let diving=false;function diveSound(){if(!sfxEnabled)return;try{const c=new (window.AudioContext||window.webkitAudioContext)();c.resume().catch(()=>{});const t=c.currentTime;const master=c.createGain();master.gain.value=.55;master.connect(c.destination);const len=Math.floor(c.sampleRate*2.5),buf=c.createBuffer(1,len,c.sampleRate),d=buf.getChannelData(0);let z=0;for(let i=0;i<len;i++){z=.96*z+.04*(Math.random()*2-1);d[i]=z*3}const n=c.createBufferSource(),f=c.createBiquadFilter(),g=c.createGain();n.buffer=buf;f.type='lowpass';f.frequency.setValueAtTime(1300,t);f.frequency.exponentialRampToValueAtTime(180,t+2.3);g.gain.setValueAtTime(.001,t);g.gain.linearRampToValueAtTime(.33,t+.22);g.gain.exponentialRampToValueAtTime(.001,t+2.45);n.connect(f).connect(g).connect(master);n.start(t);for(let i=0;i<24;i++){const a=t+.06+i*.087+Math.random()*.045,o=c.createOscillator(),v=c.createGain(),freq=140+Math.random()*490;o.type='sine';o.frequency.setValueAtTime(freq,a);o.frequency.exponentialRampToValueAtTime(freq*(1.5+Math.random()),a+.14);v.gain.setValueAtTime(.001,a);v.gain.exponentialRampToValueAtTime(.10+Math.random()*.10,a+.026);v.gain.exponentialRampToValueAtTime(.001,a+.19);o.connect(v).connect(master);o.start(a);o.stop(a+.20)}setTimeout(()=>c.close().catch(()=>{}),2800)}catch(e){}}$('enterSea').onclick=async()=>{if(diving)return;diving=true;$('enterSea').disabled=true;seaAudio.volume=0;seaAudio.play().catch(()=>{});const fx=$('diveFX');diveSound();try{if(!matchMedia('(prefers-reduced-motion: reduce)').matches){fx.querySelectorAll('i').forEach(x=>x.remove());for(let j=0;j<42;j++){const b=document.createElement('i'),r=7+Math.random()*38;b.style.cssText=`left:${Math.random()*100}%;width:${r}px;height:${r}px;--life:${1.2+Math.random()*1.4}s;--delay:${Math.random()*.85}s;--drift:${(Math.random()-.5)*150}px`;fx.append(b)}fx.hidden=false;await fx.animate([{opacity:0},{opacity:1}],{duration:420,fill:'forwards'}).finished;await new Promise(r=>setTimeout(r,1500));}$('extraGate').hidden=true;$('extraWorld').hidden=false;seaAudio.currentTime=0;seaSound();if(!fx.hidden)await fx.animate([{opacity:1},{opacity:0}],{duration:650,fill:'forwards'}).finished;}finally{fx.hidden=true;fx.getAnimations().forEach(a=>a.cancel());$('enterSea').disabled=false;diving=false}};$('seaBack').onclick=openGate;$('seaTalk').onclick=()=>{$('seaLine').textContent=['遠くから、微かな旋律が聞こえる。','光の粒が、静かに漂っている。','ここにはまだ、知らない物語がある。'][Math.floor(Math.random()*3)]};window.addEventListener('keydown',e=>{if(e.key==='Escape'&&saved&&!diving)closeExtra()});window.addEventListener('keydown',e=>{if(saved||busy){if(['ArrowUp','ArrowDown','ArrowLeft','ArrowRight','Enter'].includes(e.key)&&e.target===document.body){e.stopImmediatePropagation();e.preventDefault()}}},true);})();
