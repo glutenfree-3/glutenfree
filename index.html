@@ -8,7 +8,7 @@
 <link rel="stylesheet" href="css/part-02.css?v=20261128-header">
 <link rel="stylesheet" href="css/home-typography.css?v=20261128-header">
 <link rel="stylesheet" href="css/arcade-home.css?v=menu-hover">
-<link rel="stylesheet" href="css/site-layout.css?v=menu-hover">
+<link rel="stylesheet" href="css/site-layout.css?v=track-controls">
 </head>
 <body class="is-home">
 <header class="site-header">
@@ -40,7 +40,12 @@
               <span class="mini-player-note" aria-hidden="true">♪</span>
               <span id="trackTitle"></span>
             </div>
-            <button type="button" id="musicBtn" aria-label="再生">▶</button>
+            <div class="mini-player-controls">
+              <button type="button" id="prevTrack" aria-label="前の曲">⏮</button>
+              <button type="button" id="musicBtn" aria-label="再生">▶</button>
+              <button type="button" id="nextTrack" aria-label="次の曲">⏭</button>
+              <button type="button" id="sfxToggle" aria-label="ボタンの効果音" aria-pressed="true">SE</button>
+            </div>
           </div>
         </div>
       </div>
@@ -67,6 +72,6 @@
 <section class="pagepanel" id="pagePanel" hidden><h2 id="pageTitle"></h2><p id="placeholder">COMING SOON</p><div id="character" hidden><div style="display:flex;justify-content:space-between;color:#c8ff46;font-size:12px"><span>MIDORI.exe / PLAYER TERMINAL</span><span>01 / 07</span></div><div class="roster" id="roster"></div><div class="commands" id="commands"></div><div class="chargrid"><div><div class="portrait"><img id="charPortrait" alt="翠の仮イラスト"><div class="identity"><span class="demotag">DEMO ART / 02</span><strong>MIDORI</strong><span>雨水 翠 / AMAMI MIDORI</span></div></div><div class="spritearea"><button id="spriteBtn" aria-label="翠のミニキャラに触る"><svg viewBox="0 0 16 20" shape-rendering="crispEdges" aria-hidden="true"><path fill="#183b27" d="M4 1h8v2h2v6h-2v2H3V3h1z"/><path fill="#9eff39" d="M3 4h2v6H3zm9 1h2v6h-2z"/><path fill="#d5d9cf" d="M5 4h7v6H5z"/><path fill="#183b27" d="M4 3h9v2H4zm3 2h2v2H7z"/><path fill="#18201b" d="M6 7h2v1H6zm4 0h2v1h-2zM8 9h2v1H8zM4 11h9v6H4zM3 12h1v4H3zm10 0h1v4h-1zM5 17h3v3H5zm5 0h3v3h-3z"/><path fill="#c8ff46" d="M4 12h1v4H4zm8 0h1v4h-1zM8 11h1v5H8z"/></svg></button><div class="demotag">IDLE / CLICK ME<br><span id="clickCount">INPUT 00</span></div></div></div><div class="charinfo"><h3 id="commandTitle">PROFILE</h3><div id="commandContent"></div></div></div><div class="talkbox" id="charTalk" aria-live="polite">「……何だよ。」</div><div class="demotag" style="margin-top:8px">DEMO BUILD / STATUS VALUES ARE TEMPORARY</div></div></section>
 <div id="pageSweep" aria-hidden="true" hidden></div>
 <section id="extraBoot" hidden aria-live="polite"><div id="bootText"></div></section><section id="extraGate" hidden><button class="extraBack" id="extraReturn">◀ MAIN WORLD</button><p>GLUTENFREE / SECRET ARCHIVE</p><h1>EXTRA MODE</h1><p>★ ACHIEVEMENT UNLOCKED / UNKNOWN WORLD</p><div class="extraCards"><button id="enterSea">EXTRA 01<br><strong>OCEAN ARCHIVE</strong><br>▶ ENTER / DEMO</button><button disabled>EXTRA 02<br>LOCKED / ???</button><button disabled>EXTRA 03<br>LOCKED / ???</button></div><p>SELECT A WORLD</p></section><section id="extraWorld" hidden><div class="seaStars"></div><button class="extraBack" id="seaBack">← Extra archive</button><div class="seaContent"><svg class="seaArt" viewBox="0 0 400 420" aria-label="クラゲの仮イラスト"><defs><linearGradient id="seaGlow" x2="0" y2="1"><stop stop-color="#d5f9ff"/><stop offset="1" stop-color="#589cce" stop-opacity=".35"/></linearGradient></defs><circle cx="200" cy="170" r="145" fill="none" stroke="#b9eaff" opacity=".25"/><circle cx="200" cy="170" r="120" fill="none" stroke="#b9eaff" opacity=".4" stroke-dasharray="2 8"/><path d="M80 190Q80 60 200 60T320 190Q290 220 260 190Q230 220 200 190Q170 220 140 190Q110 220 80 190Z" fill="url(#seaGlow)" stroke="#c3f5ff" stroke-width="2"/><g fill="none" stroke="#a9e7ff" stroke-width="2" opacity=".8"><path d="M110 200Q60 250 130 300T110 390M150 200Q210 260 150 310T160 400M200 200Q160 270 220 320T200 405M250 200Q310 250 250 320T260 390M290 200Q240 260 310 320T290 380"/></g></svg><div><p>EXTRA 01 / A WORLD APART</p><h1>Ocean<br>Archive</h1><p>海の底に眠る、もうひとつの物語。</p><p>ZEESH / DEMO SLOT</p><button id="seaTalk">波の音を聴く</button><p id="seaLine" aria-live="polite"></p></div></div><div class="seaFoot">DEMO WORLD / 仮イラスト・仮演出</div></section><div id="diveFX" hidden aria-hidden="true"><div class="water"></div><div class="surface"></div><div class="diveLabel">DESCENDING...</div></div><audio id="bgm" preload="auto" autoplay playsinline></audio>
-<script src="js/part-01.js?v=mini-player"></script>
+<script src="js/part-01.js?v=track-controls"></script>
 <dialog id="gfViewer" aria-label="イラスト全画面鑑賞"><button id="gfCloseArt">× CLOSE / ESC</button><img alt="イラスト"></dialog><script src="js/part-02.js?v=20261128-header"></script></body>
 </html>
