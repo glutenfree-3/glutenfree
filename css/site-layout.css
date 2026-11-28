@@ -271,11 +271,13 @@ body:has(#extraBoot:not([hidden]), #extraGate:not([hidden]), #extraWorld:not([hi
   gap: 5px;
   min-height: 54px;
   padding: 5px;
-  border: 1px solid #93ae70;
+  border: 1px solid #d0ff9c70;
   border-radius: 14px;
-  background: #dbeeb6;
-  color: #23371c;
-  box-shadow: inset 0 2px #f5ffdc, 0 3px #42603b, 0 6px 12px #0005;
+  background: #102418ad;
+  -webkit-backdrop-filter: blur(5px);
+  backdrop-filter: blur(5px);
+  color: #f1ffe8;
+  box-shadow: inset 0 1px #e3ffc62e, 0 4px 12px #0004;
 }
 
 .mini-player-track {
@@ -291,7 +293,7 @@ body:has(#extraBoot:not([hidden]), #extraGate:not([hidden]), #extraWorld:not([hi
 
 .mini-player-note {
   flex: none;
-  color: #416e35;
+  color: #c9ff97;
 }
 
 .mini-player button {
@@ -300,22 +302,22 @@ body:has(#extraBoot:not([hidden]), #extraGate:not([hidden]), #extraWorld:not([hi
   width: 40px;
   height: 40px;
   padding: 0;
-  border: 1px solid #608d40;
+  border: 1px solid #b6f18a8c;
   border-radius: 50%;
-  background: #baf17a;
-  color: #1b3818;
+  background: #a8ed6852;
+  color: #f4ffeb;
   font-size: .875rem;
-  box-shadow: inset 0 2px #e4ffbc, 0 2px #608d40;
+  box-shadow: inset 0 1px #e4ffbc55, 0 2px #09160d55;
 }
 
 .mini-player button:hover,
 .mini-player button[data-playing="true"] {
-  background: #d2ff9f;
+  background: #bdfb796e;
 }
 
 .mini-player button:active {
   transform: translateY(2px);
-  box-shadow: inset 0 2px #e4ffbc;
+  box-shadow: inset 0 1px #e4ffbc55;
 }
 
 .page-tabs a span {
