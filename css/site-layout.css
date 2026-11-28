@@ -149,7 +149,31 @@ body {
 #extraBoot,
 #extraGate,
 #extraWorld {
-  top: var(--brand-height);
+  inset: 0;
+  z-index: 980;
+  overscroll-behavior: contain;
+}
+
+body:has(#extraBoot:not([hidden]), #extraGate:not([hidden]), #extraWorld:not([hidden])) {
+  overflow: hidden;
+}
+
+#extraGate {
+  padding-block: clamp(16px, 4svh, 44px);
+}
+
+#extraGate h1 {
+  margin-block: clamp(12px, 3svh, 24px);
+}
+
+#extraGate .extraCards button {
+  min-height: clamp(100px, 18svh, 160px);
+}
+
+.logo {
+  -webkit-user-select: none;
+  user-select: none;
+  touch-action: manipulation;
 }
 
 .site-brand .logo {
