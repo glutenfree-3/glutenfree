@@ -1,0 +1,119 @@
+.is-home .ui {
+  --arcade-lime: #c8ff46;
+}
+
+.is-home .ui::before {
+  position: absolute;
+  inset: clamp(6px, 1.3vw, 18px);
+  pointer-events: none;
+  z-index: 2;
+  content: "";
+  border: 1px solid #c8ff4640;
+  background:
+    linear-gradient(var(--arcade-lime), var(--arcade-lime)) top left / 28px 2px,
+    linear-gradient(var(--arcade-lime), var(--arcade-lime)) top left / 2px 22px,
+    linear-gradient(var(--arcade-lime), var(--arcade-lime)) bottom right / 28px 2px,
+    linear-gradient(var(--arcade-lime), var(--arcade-lime)) bottom right / 2px 22px;
+  background-repeat: no-repeat;
+}
+
+.is-home .menu {
+  border-top: none;
+}
+
+.is-home .menu button {
+  --plate: #101912e8;
+  position: relative;
+  isolation: isolate;
+  grid-template-columns: clamp(24px, 2.4vw, 34px) minmax(0, 1fr) 22px;
+  gap: clamp(5px, .9vw, 12px);
+  padding-inline: 9px !important;
+  border-bottom: 0;
+  background: none;
+}
+
+.is-home .menu button::before {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  content: "";
+  clip-path: polygon(0 0, calc(100% - 13px) 0, 100% 13px, 100% 100%, 13px 100%, 0 calc(100% - 13px));
+  background:
+    linear-gradient(90deg, #c8ff4652 2px, transparent 2px),
+    linear-gradient(165deg, var(--plate), #0b100ded);
+  box-shadow: inset 0 0 0 1px #e7ffce26;
+}
+
+.is-home .menu button.active {
+  --plate: #375517;
+}
+
+.is-home .menu button.active::before {
+  box-shadow: inset 0 0 0 1px #c8ff468c;
+}
+
+.is-home .menu .pixel-label,
+.is-home .menu button.active .pixel-label {
+  font-size: clamp(17px, 2.1vw, 27px);
+  font-weight: 800;
+  letter-spacing: .045em;
+  line-height: 1.05;
+  transform: skewX(-8deg);
+  text-shadow: 0 2px #060907;
+}
+
+.is-home .menu button.active .pixel-label {
+  text-shadow: 0 2px #1c2b0b, 0 0 14px #c8ff465c;
+}
+
+.is-home .menu button.confirming {
+  --plate: #597d23;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .is-home .ui::after {
+    position: fixed;
+    inset: 0;
+    z-index: 5;
+    content: "";
+    pointer-events: none;
+    background: linear-gradient(180deg, transparent 44%, #d9ff6230 49%, #ddff85a0 50%, transparent 51%);
+    animation: arcade-scan-in 750ms ease-out both;
+  }
+
+  .is-home .menu button::before {
+    animation: arcade-menu-in 350ms ease-out both;
+  }
+
+  .is-home .menu button:nth-child(3)::before { animation-delay: 40ms; }
+  .is-home .menu button:nth-child(4)::before { animation-delay: 80ms; }
+  .is-home .menu button:nth-child(5)::before { animation-delay: 120ms; }
+  .is-home .menu button:nth-child(6)::before { animation-delay: 160ms; }
+
+  .is-home .menu button.confirming::after {
+    position: absolute;
+    inset: auto 0 0;
+    height: 2px;
+    content: "";
+    pointer-events: none;
+    background: var(--arcade-lime);
+    box-shadow: 0 0 12px var(--arcade-lime);
+    transform-origin: left;
+    animation: arcade-confirm 300ms ease-out both;
+  }
+}
+
+@keyframes arcade-scan-in {
+  from { transform: translateY(-55%); opacity: .85; }
+  to { transform: translateY(55%); opacity: 0; }
+}
+
+@keyframes arcade-menu-in {
+  from { transform: translateX(-8px); opacity: .4; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes arcade-confirm {
+  from { transform: scaleX(.12); opacity: 1; }
+  to { transform: scaleX(1); opacity: .5; }
+}
