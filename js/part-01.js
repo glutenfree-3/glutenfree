@@ -34,6 +34,7 @@ setInterval(()=>showVisual(visualIndex+1),3000);
 const bgm=document.getElementById('bgm');
 const trackTitle=document.getElementById('trackTitle');
 const musicBtn=document.getElementById('musicBtn');
+const bgmHint=document.getElementById('bgmHint');
 const sfxToggle=document.getElementById('sfxToggle');
 let sfxEnabled=true;
 const lastTrackKey='glutenfree:last-bgm';
@@ -77,7 +78,8 @@ async function playTrack(){
   try{
     await bgm.play();
     activated=true;
-  }catch{
+  }catch(error){
+    if(error.name==='NotAllowedError' && bgm.paused)bgmHint.hidden=false;
     updatePlayer();
   }
 }
@@ -87,10 +89,11 @@ function updatePlayer(){
   musicBtn.textContent=playing?'Ⅱ':'▶';
   musicBtn.setAttribute('aria-label',playing?'一時停止':'再生');
   musicBtn.dataset.playing=String(playing);
+  if(playing)bgmHint.hidden=true;
 }
 
 function unlock(event){
-  if(activated || event.target.closest('.mini-player button,#welcomeButton'))return;
+  if(activated || !bgm.paused || event.target.closest('#musicBtn,#prevTrack,#nextTrack,#welcomeButton'))return;
   if(['extraGate','extraWorld','extraBoot'].some(id=>!document.getElementById(id).hidden))return;
   playTrack();
 }
@@ -115,6 +118,9 @@ sfxToggle.addEventListener('click',()=>{
 });
 for(const event of ['play','pause','ended','error','emptied'])bgm.addEventListener(event,updatePlayer);
 bgm.addEventListener('ended',chooseRandomNext);
+document.addEventListener('pointerup',event=>{
+  if(event.isPrimary && event.button===0)unlock(event);
+});
 document.addEventListener('click',unlock);
 document.addEventListener('keydown',unlock);
 loadTrack(initialTrack());
