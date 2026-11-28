@@ -152,7 +152,7 @@ async function sceneTransition(idx){
  try{const cells=[...wipe.children];await Promise.all(cells.map((c,i)=>c.animate([{opacity:0},{opacity:1}],{duration:100,delay:((i%12)+Math.floor(i/12))*12,easing:'steps(2,end)',fill:'forwards'}).finished));navigate(idx);window.scrollTo(0,0);await Promise.all(cells.map((c,i)=>c.animate([{opacity:1},{opacity:0}],{duration:100,delay:(19-(i%12)-Math.floor(i/12))*10,easing:'steps(2,end)',fill:'forwards'}).finished));}finally{wipe.children.length&&[...wipe.children].forEach(c=>c.getAnimations().forEach(a=>a.cancel()));wipe.classList.remove('running');transitioning=false;}
 }
 const pageTabs=[...document.querySelectorAll('.page-tabs a')];
-const siteLogo=document.querySelector('.logo');
+const siteBrand=document.querySelector('.site-brand');
 const homeBrand=document.getElementById('homeBrand');
 const pageBrand=document.getElementById('pageBrand');
 function navigate(idx,writeHash=true){
@@ -160,7 +160,7 @@ function navigate(idx,writeHash=true){
  const panel=document.getElementById('pagePanel');panel.hidden=idx===0; panel.classList.toggle("charpage",idx===1);document.getElementById("character").hidden=idx!==1;document.getElementById("placeholder").hidden=idx===1;
  document.body.classList.toggle("is-home",idx===0);
  const brand=idx===0?homeBrand:pageBrand;
- if(siteLogo.parentElement!==brand)brand.prepend(siteLogo);
+ if(siteBrand.parentElement!==brand)brand.prepend(siteBrand);
  document.getElementById('pageTitle').textContent=menuBtns[idx].dataset.name;
  for(const link of pageTabs){
    if(link.hash.slice(1)===menuBtns[idx].dataset.name.toLowerCase())link.setAttribute('aria-current','page');

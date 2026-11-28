@@ -151,3 +151,30 @@ body {
 #extraWorld {
   top: var(--brand-height);
 }
+
+.site-brand .logo {
+  margin: 0;
+}
+
+.brand-subtitle {
+  margin: 0;
+  color: #b7c7ae;
+  font: 500 clamp(.6875rem, 1vw, .8125rem)/1.3 Oxanium, monospace;
+  letter-spacing: .05em;
+  white-space: nowrap;
+}
+
+.is-home .site-brand {
+  display: grid;
+  gap: clamp(6px, 1.2svh, 12px);
+  margin-bottom: clamp(12px, 2.8svh, 28px);
+}
+
+.is-home .menu {
+  gap: clamp(3px, .75svh, 8px);
+}
+
+#pageBrand .brand-subtitle {
+  margin-top: 5px;
+  letter-spacing: 0;
+}
