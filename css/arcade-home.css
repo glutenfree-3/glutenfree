@@ -117,3 +117,25 @@
   from { transform: scaleX(.12); opacity: 1; }
   to { transform: scaleX(1); opacity: .5; }
 }
+
+.is-home .menu button {
+  transform-origin: left center;
+}
+
+.is-home .menu button:focus-visible {
+  z-index: 1;
+  transform: scale(1.045) !important;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .is-home .menu button:hover {
+    z-index: 1;
+    transform: scale(1.045) !important;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .is-home .menu button {
+    transition: background .16s, border-color .16s, transform .16s ease-out;
+  }
+}
