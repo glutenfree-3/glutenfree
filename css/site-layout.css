@@ -437,3 +437,94 @@ body:has(#extraBoot:not([hidden]), #extraGate:not([hidden]), #extraWorld:not([hi
     animation: none;
   }
 }
+
+#character:not([hidden]) {
+  grid-template-rows: auto minmax(0, 1fr);
+}
+
+#character .character-selection {
+  min-width: 0;
+  padding: 10px 12px;
+  border-left: 2px solid #baff46;
+  background: linear-gradient(140deg, #263916, #101810 68%);
+}
+
+#character #character-select-title {
+  margin: 0 0 10px;
+  color: #d8ff8b;
+  font: 800 clamp(1rem, 1.4vw, 1.35rem)/1.1 Oxanium, system-ui, sans-serif;
+  font-style: oblique 8deg;
+}
+
+#character .roster {
+  grid-template-columns: repeat(auto-fit, minmax(95px, 1fr));
+  gap: 5px;
+}
+
+#character .roster button {
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr);
+  grid-template-rows: auto auto;
+  align-items: center;
+  column-gap: 6px;
+  min-height: 43px;
+  padding: 4px;
+  border: 1px solid #4b5b3f;
+  border-radius: 4px;
+  font-size: .75rem;
+  line-height: 1.1;
+  text-align: left;
+}
+
+#character .roster button.on {
+  border-color: #c8ff46;
+  background: linear-gradient(110deg, #486623, #203015);
+  color: #eaffbf;
+  box-shadow: inset 2px 0 #d7ff67, 0 0 12px #c8ff4626;
+}
+
+.roster-badge {
+  grid-row: 1 / -1;
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 2px;
+  background: #0b120b;
+  object-fit: cover;
+  color: #a5b78e;
+}
+
+.roster-name {
+  font-weight: 800;
+}
+
+.roster-state {
+  color: #c0d6ab;
+  font-size: .5625rem;
+  letter-spacing: .06em;
+}
+
+#character .portrait {
+  border-color: #74984e;
+  background: radial-gradient(ellipse at 50% 48%, #29471a, #080d09 78%);
+}
+
+@media (min-width: 1050px) {
+  #character:not([hidden]) {
+    grid-template-columns: clamp(171px, 16vw, 228px) minmax(0, 1fr);
+    grid-template-rows: minmax(0, 1fr);
+  }
+
+  #character .character-selection {
+    align-self: start;
+  }
+
+  #character .roster {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  #character .chargrid {
+    grid-template-columns: minmax(0, 1.2fr) minmax(310px, 1fr);
+  }
+}

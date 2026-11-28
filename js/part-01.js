@@ -339,7 +339,48 @@ window.addEventListener('keydown',e=>{
 });
 
 const charPortrait=document.getElementById('charPortrait');charPortrait.src=visuals[1].src;
-const roster=document.getElementById('roster');['MIDORI','DAI','YOSHIRO','SHO','TSUKUMO','HIIRO','GAKU'].forEach((n,i)=>{const b=document.createElement('button');b.textContent=(i===0?'▶ ':'')+n;b.disabled=i!==0;b.title=i?'COMING SOON':'MIDORI';if(!i){b.className='on';b.onclick=()=>showCommand('PROFILE')}roster.append(b)});
+const roster=document.getElementById('roster');
+const characterNames=['MIDORI','DAI','YOSHIRO','SHO','TSUKUMO','HIIRO','GAKU'];
+characterNames.forEach((name,index)=>{
+  const button=document.createElement('button');
+  const available=index===0;
+  button.type='button';
+  button.disabled=!available;
+  button.setAttribute('aria-label',available?name:name+'（未公開）');
+
+  const badge=document.createElement(available?'img':'span');
+  badge.className='roster-badge';
+  if(available){
+    badge.src=charPortrait.src;
+    badge.alt='';
+  }else{
+    badge.textContent='?';
+    badge.setAttribute('aria-hidden','true');
+  }
+
+  const label=document.createElement('span');
+  label.className='roster-name';
+  label.textContent=name;
+
+  const status=document.createElement('small');
+  status.className='roster-state';
+  status.textContent=available?'SELECTED':'LOCKED';
+  button.append(badge,label,status);
+
+  if(available){
+    button.classList.add('on');
+    button.setAttribute('aria-current','true');
+    button.addEventListener('pointerenter',retroHover);
+    button.addEventListener('click',()=>{
+      retroClick();
+      showCommand('PROFILE');
+      if(!matchMedia('(prefers-reduced-motion: reduce)').matches){
+        charPortrait.animate?.([{opacity:.75},{opacity:1}],{duration:220});
+      }
+    });
+  }
+  roster.append(button);
+});
 let typing, hits=0, unlocked=false;const talk=document.getElementById('charTalk');function say(line){clearInterval(typing);talk.textContent='';let j=0;typing=setInterval(()=>{talk.textContent=line.slice(0,++j);if(j>=line.length)clearInterval(typing)},35)}
 const profile='<p>雨水 翠（あまみ みどり）</p><p>AGE / 28　HEIGHT / 178 cm<br>所属 / 異祓士・第二弟子</p><p>無愛想で皮肉屋。面倒くさがりだが、ゲームの腕は抜群。猫には甘い。</p>';
 const cmd=document.getElementById('commands');
