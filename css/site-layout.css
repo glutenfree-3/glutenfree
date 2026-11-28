@@ -102,48 +102,7 @@ body {
     display: grid;
   }
 
-  #character:not([hidden]) {
-    width: 100%;
-    min-height: 0;
-    margin: 0 auto;
-    display: grid;
-    grid-template-rows: auto auto auto minmax(0, 1fr) auto auto;
-  }
 
-  #character .chargrid {
-    min-height: 0;
-    align-items: stretch;
-    grid-template-columns: minmax(0, 1.4fr) minmax(300px, 1fr);
-  }
-
-  #character .chargrid > div:first-child {
-    position: static;
-    min-height: 0;
-    display: grid;
-    grid-template-rows: minmax(0, 1fr) auto;
-  }
-
-  #character .portrait {
-    height: 100%;
-    aspect-ratio: auto;
-  }
-
-  #character .charinfo {
-    max-height: none;
-    overflow: auto;
-  }
-
-  #character .spritearea svg {
-    width: 36px;
-    height: 44px;
-    display: block;
-  }
-
-  #character .talkbox {
-    min-height: 0;
-    margin-top: 7px;
-    padding: 7px 10px;
-  }
 }
 
 #extraBoot,
@@ -359,4 +318,122 @@ body:has(#extraBoot:not([hidden]), #extraGate:not([hidden]), #extraWorld:not([hi
 .mini-player:has(.mini-player-hint:not([hidden])) #musicBtn {
   outline: 1px solid #c8ff46;
   outline-offset: 1px;
+}
+
+#character:not([hidden]) {
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  gap: 12px;
+  width: 100%;
+  min-height: 0;
+  margin: 0 auto;
+}
+
+#character .chargrid {
+  gap: clamp(12px, 2vw, 28px);
+  align-items: stretch;
+}
+
+#character .portrait {
+  margin: 0;
+  background: #050805;
+  height: auto;
+  aspect-ratio: 1.42;
+}
+
+#character .character-dossier {
+  display: grid;
+  grid-template-rows: auto auto minmax(0, 1fr) auto;
+  min-width: 0;
+  min-height: 0;
+}
+
+#character .character-name h2 {
+  margin: 0;
+  color: #effbe5;
+  font: 800 clamp(1.65rem, 3.2vw, 3.5rem)/1.05 system-ui, sans-serif;
+}
+
+#character .character-name p {
+  margin: 4px 0 8px;
+  color: #c8ff46;
+  font: 800 .9rem Oxanium, system-ui, sans-serif;
+  letter-spacing: .13em;
+}
+
+#character .commands button,
+#character .roster button {
+  font-family: Oxanium, system-ui, sans-serif;
+  font-weight: 700;
+}
+
+#character .charinfo {
+  max-height: none;
+  border: 1px solid #536349;
+  background: linear-gradient(145deg, #17271a, #101911);
+  box-shadow: none;
+  overflow: auto;
+}
+
+.character-dialogue {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+#character .character-dialogue button {
+  display: grid;
+  place-items: center;
+  padding: 4px;
+}
+
+.character-dialogue svg {
+  width: 24px;
+  height: 30px;
+}
+
+.character-dialogue svg.bop {
+  animation: bop .3s steps(3,end);
+}
+
+#character .character-dialogue .talkbox {
+  min-height: 36px;
+  margin: 0;
+  padding: 6px 9px;
+  font-size: .875rem;
+}
+
+.character-input {
+  color: #a9b69b;
+  font: 600 .625rem Oxanium, system-ui, sans-serif;
+  white-space: nowrap;
+}
+
+#character .roster {
+  margin: 0;
+}
+
+@media (min-width: 901px) and (min-height: 620px) {
+  #character .chargrid {
+    min-height: 0;
+    grid-template-columns: minmax(0, 1.35fr) minmax(330px, 1fr);
+  }
+
+  #character .portrait {
+    aspect-ratio: auto;
+  }
+}
+
+@media (max-width: 900px) {
+  #character .chargrid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .character-dialogue svg.bop {
+    animation: none;
+  }
 }
