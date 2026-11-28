@@ -100,8 +100,36 @@ bgm.addEventListener('ended', chooseRandomNext);
 
 let actx;
 function AC(){ actx ||= new (window.AudioContext||window.webkitAudioContext)(); return actx; }
-function retroHover(){ if(!sfxOn) return; const c=AC(); c.resume(); const now=c.currentTime; [680,900].forEach((f,n)=>{ const o=c.createOscillator(), g=c.createGain(); o.type='square'; o.frequency.setValueAtTime(f,now+n*0.028); g.gain.setValueAtTime(.0001,now+n*0.028); g.gain.exponentialRampToValueAtTime(.08,now+n*0.028+0.01); g.gain.exponentialRampToValueAtTime(.0001,now+n*0.028+0.10); o.connect(g).connect(c.destination); o.start(now+n*0.028); o.stop(now+n*0.028+0.11); }); }
-function retroClick(){ if(!sfxOn) return; const c=AC(); c.resume(); const now=c.currentTime; [520,740,980].forEach((f,n)=>{ const o=c.createOscillator(), g=c.createGain(); o.type='square'; o.frequency.setValueAtTime(f,now+n*0.04); g.gain.setValueAtTime(.0001,now+n*0.04); g.gain.exponentialRampToValueAtTime(.12,now+n*0.04+0.01); g.gain.exponentialRampToValueAtTime(.0001,now+n*0.04+0.14); o.connect(g).connect(c.destination); o.start(now+n*0.04); o.stop(now+n*0.04+0.15); }); }
+
+function playMenuTones(context, frequencies, spacing, duration, peak){
+  if(!sfxOn || context.state!=='running')return;
+  frequencies.forEach((frequency,index)=>{
+    const start=context.currentTime+index*spacing;
+    const oscillator=context.createOscillator();
+    const gain=context.createGain();
+    oscillator.type='square';
+    oscillator.frequency.setValueAtTime(frequency,start);
+    gain.gain.setValueAtTime(.0001,start);
+    gain.gain.exponentialRampToValueAtTime(peak,start+.012);
+    gain.gain.exponentialRampToValueAtTime(.0001,start+duration);
+    oscillator.connect(gain).connect(context.destination);
+    oscillator.start(start);
+    oscillator.stop(start+duration+.01);
+  });
+}
+
+function retroHover(){
+  if(!sfxOn || actx?.state!=='running')return;
+  playMenuTones(actx,[680,900],.028,.1,.018);
+}
+
+function retroClick(){
+  if(!sfxOn || !(window.AudioContext||window.webkitAudioContext))return;
+  const context=AC();
+  const play=()=>playMenuTones(context,[520,740,980],.04,.14,.027);
+  if(context.state==='running')play();
+  else context.resume().then(play).catch(()=>{});
+}
 
 const menuBtns=[...document.querySelectorAll('.menu button')];
 
@@ -232,6 +260,19 @@ window.addEventListener('keydown',event=>{
 
 window.addEventListener('hashchange',()=>{route();window.scrollTo(0,0);});
 route();
+for(const link of pageTabs){
+  link.addEventListener('pointerenter',event=>{if(event.pointerType==='mouse')retroHover();});
+  link.addEventListener('focus',()=>{if(link.matches(':focus-visible'))retroHover();});
+  link.addEventListener('click',event=>{
+    if(event.defaultPrevented || event.button!==0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey)return;
+    const index=menuBtns.findIndex(button=>link.hash.slice(1)===button.dataset.name.toLowerCase());
+    if(index<0)return;
+    event.preventDefault();
+    if(transitioning)return;
+    retroClick();
+    if(location.hash!==link.hash)sceneTransition(index);
+  });
+}
 menuBtns.forEach((btn,idx)=>{
   btn.addEventListener('mouseenter',()=>setMenu(idx,true));btn.addEventListener('mouseleave',()=>{hoverIndex=-1;});
   btn.addEventListener('focus',()=>setMenu(idx,true));

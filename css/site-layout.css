@@ -178,3 +178,38 @@ body {
   margin-top: 5px;
   letter-spacing: 0;
 }
+
+.page-tabs a {
+  position: relative;
+}
+
+.page-tabs a::after {
+  position: absolute;
+  inset: auto 8px 3px;
+  height: 2px;
+  content: "";
+  background: #baff45;
+  opacity: 0;
+  transform: scaleX(.2);
+  transform-origin: left;
+}
+
+.page-tabs a:hover::after,
+.page-tabs a:focus-visible::after {
+  opacity: .85;
+  transform: scaleX(1);
+}
+
+#wipe.running {
+  z-index: 1000;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .page-tabs a {
+    transition: color .16s ease-out, background-color .16s ease-out;
+  }
+
+  .page-tabs a::after {
+    transition: transform .2s ease-out, opacity .2s ease-out;
+  }
+}
