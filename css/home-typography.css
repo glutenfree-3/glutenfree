@@ -1,0 +1,16 @@
+@font-face {
+  font-family: Oxanium;
+  src: url("../fonts/oxanium-latin.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 400 800;
+  font-display: swap;
+}
+
+.is-home .ui,
+.is-home #extraShortcut {
+  font-family: Oxanium, "Hiragino Sans", "Yu Gothic", Meiryo, "Noto Sans CJK JP", "Noto Sans JP", system-ui, sans-serif;
+}
+
+.is-home .times {
+  font-variant-numeric: tabular-nums;
+}
