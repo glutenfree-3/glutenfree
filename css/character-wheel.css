@@ -190,3 +190,62 @@
   from { opacity: 0; transform: translateY(8px); }
   to { opacity: 1; transform: translateY(0); }
 }
+
+.character-stage-lights {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(135deg, transparent 12px, var(--character-accent) 13px, transparent 14px) top 12px left 12px / 34px 34px no-repeat,
+    linear-gradient(315deg, transparent 12px, var(--character-accent) 13px, transparent 14px) bottom 12px right 12px / 34px 34px no-repeat,
+    repeating-linear-gradient(90deg, #e7ffef12 0 1px, transparent 1px 28px);
+}
+
+.character-stage-ring {
+  position: absolute;
+  top: 38%;
+  left: 50%;
+  width: min(64%, 460px);
+  aspect-ratio: 1;
+  translate: -50% -50%;
+  border-radius: 50%;
+  opacity: .52;
+  background: repeating-conic-gradient(from 12deg, var(--character-accent) 0 2deg, transparent 2deg 17deg);
+  mask-image: radial-gradient(circle, transparent 67%, black 68% 69.5%, transparent 70.5%);
+}
+
+.character-stage-beam {
+  position: absolute;
+  inset: 6% 19% 15%;
+  opacity: .35;
+  background: conic-gradient(from -35deg at 50% 100%, transparent 0deg, var(--character-accent) 27deg, transparent 51deg 360deg);
+  mask-image: linear-gradient(transparent, black 92%);
+}
+
+#characterStagePulse {
+  position: absolute;
+  inset: 44% 17% 11%;
+  opacity: 0;
+  border: 2px solid var(--character-accent);
+  border-radius: 50%;
+  box-shadow: 0 0 30px var(--character-accent);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .character-stage-ring { animation: character-stage-rotate 30s linear infinite; }
+  .character-stage-beam { animation: character-stage-pan 8s ease-in-out infinite alternate; }
+  .character-slot[aria-current] img { animation: character-stage-idle 3.6s ease-in-out infinite; }
+}
+
+@keyframes character-stage-rotate {
+  to { rotate: 1turn; }
+}
+
+@keyframes character-stage-pan {
+  from { transform: translateX(-9%) skewX(-7deg); opacity: .15; }
+  to { transform: translateX(9%) skewX(7deg); opacity: .38; }
+}
+
+@keyframes character-stage-idle {
+  50% { transform: translateY(-4px); }
+}
