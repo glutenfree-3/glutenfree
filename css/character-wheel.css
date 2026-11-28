@@ -1,46 +1,23 @@
-#character:not([hidden]) {
-  --character-accent: #c8ff46;
-  width: min(100%, 820px);
-  grid-template-columns: minmax(0, 1fr);
-  grid-template-rows: auto minmax(270px, 1fr) auto;
+#pagePanel.charpage {
+  background:
+    repeating-radial-gradient(ellipse at 40% 60%, #4f392808 0 .8px, transparent 1px 5px),
+    radial-gradient(ellipse at 50% 35%, #f0e2c8, #cbb798 75%, #a89273);
 }
 
-#character #character-select-title {
-  margin-inline: auto;
-  color: var(--character-accent);
-  font-size: clamp(1.2rem, 3vw, 2.6rem);
+#character:not([hidden]) {
+  --character-accent: #c8ff46;
+  --print-ink: #15251a;
+  --disc: #121813;
+  width: min(100%, 820px);
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: minmax(280px, 1fr) auto;
 }
 
 .character-wheel {
   position: relative;
   isolation: isolate;
-  overflow: hidden;
-  min-height: clamp(290px, 52svh, 680px);
-  border: 1px solid color-mix(in srgb, var(--character-accent) 36%, transparent);
-  border-radius: 16px;
-  background:
-    radial-gradient(ellipse at 50% 65%, color-mix(in srgb, var(--character-accent) 26%, transparent), transparent 64%),
-    repeating-linear-gradient(0deg, #ffffff08 0 1px, transparent 1px 6px),
-    #0b140e;
+  min-height: clamp(280px, 52svh, 680px);
   touch-action: pan-y;
-}
-
-.character-wheel::before,
-.character-wheel::after {
-  position: absolute;
-  inset: 48% 18% 12%;
-  pointer-events: none;
-  content: "";
-  border: 1px solid color-mix(in srgb, var(--character-accent) 64%, transparent);
-  border-radius: 50%;
-  box-shadow: 0 0 26px color-mix(in srgb, var(--character-accent) 22%, transparent);
-}
-
-.character-wheel::after {
-  inset: 52% 23% 17%;
-  border-style: dashed;
-  opacity: .6;
-  box-shadow: none;
 }
 
 .character-orbit {
@@ -52,12 +29,12 @@
 #character .character-slot {
   position: absolute;
   left: calc(50% + var(--orbit-x));
-  top: calc(64% + var(--orbit-y));
+  top: calc(72% + var(--orbit-y));
   display: grid;
   grid-template-rows: minmax(0, 1fr);
   justify-items: center;
   width: min(42%, 330px);
-  height: 66%;
+  height: 72%;
   padding: 0;
   border: 0;
   background: none;
@@ -80,10 +57,12 @@
   min-height: 0;
   object-fit: contain;
   grid-row: 1;
-  filter: grayscale(1) brightness(.56);
+  filter: grayscale(1) brightness(.72);
+  opacity: .69;
 }
 
 .character-slot[aria-current] img {
+  opacity: 1;
   filter: drop-shadow(0 0 11px color-mix(in srgb, var(--character-accent) 65%, transparent));
 }
 
@@ -191,61 +170,117 @@
   to { opacity: 1; transform: translateY(0); }
 }
 
+#character[data-motif="dai"] { --print-ink: #a94d1f; --disc: #b04f23; }
+#character[data-motif="kotobuki"] { --print-ink: #815616; --disc: #211c16; }
+#character[data-motif="sho"] { --print-ink: #69378e; --disc: #553078; }
+#character[data-motif="tsukumo"] { --print-ink: #456982; --disc: #182e42; }
+#character[data-motif="hiiro"] { --print-ink: #125c53; --disc: #0e2925; }
+#character[data-motif="gaku"] { --print-ink: #8e1c21; --disc: #67171c; }
+
 .character-stage-lights {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background:
-    linear-gradient(135deg, transparent 12px, var(--character-accent) 13px, transparent 14px) top 12px left 12px / 34px 34px no-repeat,
-    linear-gradient(315deg, transparent 12px, var(--character-accent) 13px, transparent 14px) bottom 12px right 12px / 34px 34px no-repeat,
-    repeating-linear-gradient(90deg, #e7ffef12 0 1px, transparent 1px 28px);
 }
 
-.character-stage-ring {
+.character-stage-disc,
+.character-stage-ornament {
   position: absolute;
-  top: 38%;
+  top: 42%;
   left: 50%;
-  width: min(64%, 460px);
+  width: min(64%, 56svh);
   aspect-ratio: 1;
   translate: -50% -50%;
   border-radius: 50%;
-  opacity: .52;
-  background: repeating-conic-gradient(from 12deg, var(--character-accent) 0 2deg, transparent 2deg 17deg);
-  mask-image: radial-gradient(circle, transparent 67%, black 68% 69.5%, transparent 70.5%);
 }
 
-.character-stage-beam {
-  position: absolute;
-  inset: 6% 19% 15%;
-  opacity: .35;
-  background: conic-gradient(from -35deg at 50% 100%, transparent 0deg, var(--character-accent) 27deg, transparent 51deg 360deg);
-  mask-image: linear-gradient(transparent, black 92%);
+.character-stage-disc {
+  background: radial-gradient(circle at 57% 62%, var(--disc), #131310 95%);
+  box-shadow: 0 0 0 1px var(--print-ink), 0 0 0 5px #f1dfc880, 0 0 0 6px var(--print-ink);
+}
+
+.character-stage-ornament {
+  width: min(76%, 67svh);
+  opacity: .8;
+  background: repeating-conic-gradient(from 10deg, var(--print-ink) 0 1.6deg, transparent 1.9deg 14deg);
+  mask-image: radial-gradient(circle, transparent 55%, black 55.5% 66%, transparent 68%);
+}
+
+[data-motif="dai"] .character-stage-ornament {
+  background: repeating-conic-gradient(from 4deg, #b95521 0 2deg, transparent 2.3deg 9deg);
+  mask-image: radial-gradient(circle, transparent 45%, black 46% 68%, transparent 69%);
+}
+
+[data-motif="kotobuki"] .character-stage-ornament {
+  background: repeating-conic-gradient(from 15deg, #94631c 0 3deg, transparent 3.4deg 15deg);
+  mask-image: repeating-radial-gradient(circle, transparent 0 8%, black 8.5% 9.5%, transparent 10% 12%);
+}
+
+[data-motif="sho"] .character-stage-ornament {
+  background: repeating-conic-gradient(from 20deg,
+    #83799a 0 5deg, #67388e 5deg 9deg, transparent 9deg 24deg);
+  mask-image: radial-gradient(circle, transparent 51%, black 52% 61%, transparent 64%);
+}
+
+[data-motif="tsukumo"] .character-stage-ornament,
+[data-motif="gaku"] .character-stage-ornament {
+  background: repeating-radial-gradient(circle, transparent 0 6px, var(--print-ink) 7px 8px, transparent 9px 14px);
+}
+
+[data-motif="hiiro"] .character-stage-disc {
+  background: radial-gradient(circle at 38% 43%, #d4bfa0 0 52%, var(--disc) 53%);
 }
 
 #characterStagePulse {
   position: absolute;
-  inset: 44% 17% 11%;
+  inset: 45% 19% 12%;
   opacity: 0;
-  border: 2px solid var(--character-accent);
+  border: 1px solid var(--print-ink);
   border-radius: 50%;
-  box-shadow: 0 0 30px var(--character-accent);
+  box-shadow: 0 0 24px var(--character-accent);
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .character-stage-ring { animation: character-stage-rotate 30s linear infinite; }
-  .character-stage-beam { animation: character-stage-pan 8s ease-in-out infinite alternate; }
+  .character-stage-ornament { animation: character-print-rotate 64s linear infinite; }
   .character-slot[aria-current] img { animation: character-stage-idle 3.6s ease-in-out infinite; }
 }
 
-@keyframes character-stage-rotate {
+@keyframes character-print-rotate {
   to { rotate: 1turn; }
-}
-
-@keyframes character-stage-pan {
-  from { transform: translateX(-9%) skewX(-7deg); opacity: .15; }
-  to { transform: translateX(9%) skewX(7deg); opacity: .38; }
 }
 
 @keyframes character-stage-idle {
   50% { transform: translateY(-4px); }
+}
+
+.character-stage-lights::before,
+.character-stage-lights::after {
+  position: absolute;
+  top: 62%;
+  left: 18%;
+  width: 16%;
+  aspect-ratio: 1.7;
+  content: "";
+  opacity: .65;
+  background:
+    radial-gradient(ellipse at 22% 66%, var(--print-ink) 0 13%, transparent 14%) 0 0 / 33% 55%,
+    radial-gradient(ellipse at 65% 34%, var(--print-ink) 0 12%, transparent 13%) 0 0 / 38% 52%;
+  transform: rotate(-34deg);
+}
+
+.character-stage-lights::after {
+  right: 18%;
+  left: auto;
+  transform: scaleX(-1) rotate(-34deg);
+}
+
+[data-motif="tsukumo"] .character-stage-lights::before,
+[data-motif="tsukumo"] .character-stage-lights::after {
+  background: repeating-radial-gradient(ellipse at 50% 100%, transparent 0 6px, var(--print-ink) 7px 8px, transparent 9px 13px);
+}
+
+[data-motif="gaku"] .character-stage-lights::before,
+[data-motif="gaku"] .character-stage-lights::after {
+  background: repeating-conic-gradient(from -45deg at 50% 90%, var(--print-ink) 0 4deg, transparent 6deg 17deg);
+  mask-image: radial-gradient(ellipse at bottom, black 34%, transparent 72%);
 }
