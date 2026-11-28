@@ -259,32 +259,63 @@ body:has(#extraBoot:not([hidden]), #extraGate:not([hidden]), #extraWorld:not([hi
 }
 
 .brand-player {
-  flex: 0 0 clamp(84px, 12vw, 144px);
-  width: clamp(84px, 12vw, 144px);
-  min-height: 52px;
-  color: var(--text);
+  flex: 0 0 clamp(112px, 12vw, 152px);
+  width: clamp(112px, 12vw, 152px);
   font-family: Oxanium, system-ui, sans-serif;
 }
 
-.brand-player #pod.minimized {
-  width: 100%;
+.mini-player {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 40px;
+  align-items: center;
+  gap: 5px;
+  min-height: 54px;
+  padding: 5px;
+  border: 1px solid #93ae70;
+  border-radius: 14px;
+  background: #dbeeb6;
+  color: #23371c;
+  box-shadow: inset 0 2px #f5ffdc, 0 3px #42603b, 0 6px 12px #0005;
 }
 
-body .brand-player #pod:not(.minimized) {
-  position: absolute;
-  top: calc(100% + 4px);
-  right: 0;
-  width: min(254px, calc(100vw - 28px));
-  max-width: none;
+.mini-player-track {
+  display: flex;
+  align-items: flex-start;
+  gap: 3px;
+  padding-inline-start: 2px;
+  font-size: .75rem;
+  font-weight: 700;
+  line-height: 1.15;
+  overflow-wrap: anywhere;
 }
 
-.brand-player #minPod {
-  min-width: 24px;
-  min-height: 24px;
+.mini-player-note {
+  flex: none;
+  color: #416e35;
 }
 
-.brand-player #miniTrack {
-  margin-top: 2px;
+.mini-player button {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 1px solid #608d40;
+  border-radius: 50%;
+  background: #baf17a;
+  color: #1b3818;
+  font-size: .875rem;
+  box-shadow: inset 0 2px #e4ffbc, 0 2px #608d40;
+}
+
+.mini-player button:hover,
+.mini-player button[data-playing="true"] {
+  background: #d2ff9f;
+}
+
+.mini-player button:active {
+  transform: translateY(2px);
+  box-shadow: inset 0 2px #e4ffbc;
 }
 
 .page-tabs a span {
@@ -296,11 +327,6 @@ body .brand-player #pod:not(.minimized) {
 @media (max-width: 700px) {
   .is-home .brand-cluster .logo {
     font-size: clamp(29px, 8vw, 58px);
-  }
-
-  .brand-player #pod:not(.minimized) {
-    right: auto;
-    left: 0;
   }
 }
 
