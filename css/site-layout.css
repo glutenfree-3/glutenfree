@@ -8,7 +8,7 @@ body {
 .site-header {
   position: sticky;
   top: 0;
-  z-index: 30;
+  z-index: 940;
   display: flex;
   align-items: center;
   gap: clamp(12px, 2.4vw, 36px);
@@ -69,12 +69,12 @@ body {
 #pagePanel,
 #pagePanel.charpage {
   min-height: calc(100svh - var(--header-height));
-  padding: 12px var(--site-gutter) 78px !important;
+  padding: 12px var(--site-gutter) 20px !important;
 }
 
 #crtGallery {
   top: var(--header-height) !important;
-  bottom: 74px !important;
+  bottom: 0 !important;
 }
 
 #character .commands {
@@ -192,7 +192,6 @@ body:has(#extraBoot:not([hidden]), #extraGate:not([hidden]), #extraWorld:not([hi
 .is-home .site-brand {
   display: grid;
   gap: clamp(6px, 1.2svh, 12px);
-  margin-bottom: clamp(12px, 2.8svh, 28px);
 }
 
 .is-home .menu {
@@ -242,5 +241,71 @@ body:has(#extraBoot:not([hidden]), #extraGate:not([hidden]), #extraWorld:not([hi
 
   .page-tabs a::after {
     transition: transform .2s ease-out, opacity .2s ease-out;
+  }
+}
+
+.brand-cluster {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: clamp(10px, 1.6vw, 22px);
+}
+
+.is-home .brand-cluster {
+  width: max-content;
+  max-width: calc(100vw - 2 * var(--site-gutter));
+  margin-bottom: clamp(12px, 2.8svh, 28px);
+  z-index: 5;
+}
+
+.brand-player {
+  flex: 0 0 clamp(84px, 12vw, 144px);
+  width: clamp(84px, 12vw, 144px);
+  min-height: 52px;
+  color: var(--text);
+  font-family: Oxanium, system-ui, sans-serif;
+}
+
+.brand-player #pod.minimized {
+  width: 100%;
+}
+
+body .brand-player #pod:not(.minimized) {
+  position: absolute;
+  top: calc(100% + 4px);
+  right: 0;
+  width: min(254px, calc(100vw - 28px));
+  max-width: none;
+}
+
+.brand-player #minPod {
+  min-width: 24px;
+  min-height: 24px;
+}
+
+.brand-player #miniTrack {
+  margin-top: 2px;
+}
+
+.page-tabs a span {
+  font-weight: 800;
+  letter-spacing: .045em;
+  transform: skewX(-8deg);
+}
+
+@media (max-width: 700px) {
+  .is-home .brand-cluster .logo {
+    font-size: clamp(29px, 8vw, 58px);
+  }
+
+  .brand-player #pod:not(.minimized) {
+    right: auto;
+    left: 0;
+  }
+}
+
+@media (max-width: 500px) {
+  #pageBrand .brand-subtitle {
+    font-size: .625rem;
   }
 }

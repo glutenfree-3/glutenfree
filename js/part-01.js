@@ -203,7 +203,7 @@ async function sceneTransition(idx){
   }
 }
 const pageTabs=[...document.querySelectorAll('.page-tabs a')];
-const siteBrand=document.querySelector('.site-brand');
+const siteBrand=document.querySelector('.brand-cluster');
 const homeBrand=document.getElementById('homeBrand');
 const pageBrand=document.getElementById('pageBrand');
 function navigate(idx,writeHash=true){
