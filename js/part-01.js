@@ -347,7 +347,7 @@ const characterWheel=document.getElementById('characterWheel');
 const characterDetails=document.getElementById('characterDetails');
 const characterCurrent=document.getElementById('characterCurrent');
 const characterRoster=document.getElementById('roster');
-const characterNames=['Midori','Dai','Yoshiro','Sho','Tsukumo','Hiiro','Gaku'];
+const characterNames=['Midori','Dai','Kotobuki','Sho','Tsukumo','Hiiro','Gaku'];
 const reducedCharacterMotion=matchMedia('(prefers-reduced-motion: reduce)');
 let characterSelected=0;
 let wheelTurn=0;
@@ -362,6 +362,7 @@ const characterSlots=characterNames.map((name,index)=>{
   button.className='character-slot';
   const image=document.createElement('img');
   image.src='images/characters/'+name.toLowerCase()+'.png';
+  image.loading='lazy';
   image.alt='';
   image.draggable=false;
   image.addEventListener('error',()=>{image.hidden=true;button.classList.add('missing-art');});
