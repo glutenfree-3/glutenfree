@@ -225,8 +225,14 @@ body:has(#extraBoot:not([hidden]), #extraGate:not([hidden]), #extraWorld:not([hi
   transform: scaleX(1);
 }
 
-#wipe.running {
+#pageSweep {
+  position: fixed;
+  inset: -14svh 35vw;
   z-index: 1000;
+  pointer-events: none;
+  background: linear-gradient(90deg,
+    transparent 0%, #c8ff4608 12%, #c8ff4626 54%,
+    #c8ff4660 83%, #e7ffa9a6 88%, #c8ff4633 90%, transparent 100%);
 }
 
 @media (prefers-reduced-motion: no-preference) {
