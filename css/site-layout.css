@@ -154,6 +154,7 @@ body {
 
 .site-brand .logo {
   margin: 0;
+  line-height: 1.12;
 }
 
 .brand-subtitle {
